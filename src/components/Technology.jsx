@@ -59,7 +59,10 @@ export default function Technology() {
   };
 
   return (
-    <section id="technology" className="relative overflow-hidden py-16 md:py-24">
+    <section
+      id="technology"
+      className="relative overflow-hidden py-16 md:py-24"
+    >
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center md:bg-fixed"
@@ -221,7 +224,7 @@ export default function Technology() {
           backgroundImage: `url(${bottomImage})`,
           backgroundSize: "auto 100%",
         }}
-      />
+      />  
     </section>
   );
 }

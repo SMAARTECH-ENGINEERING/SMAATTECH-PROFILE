@@ -20,10 +20,12 @@ import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import ContactFloat from './components/ContactFloat'
 import ChatBot from './components/ChatBot'
+import Loader from './components/loader'
 
 export default function App() {
   return (
     <div className="min-h-screen">
+      <Loader />
       <Header />
       <main>
         {/* 1. Hero */}

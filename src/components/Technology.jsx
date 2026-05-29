@@ -1,13 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  Cpu,
-  Monitor,
-  Wifi,
-  Activity,
-  Database,
-  Settings,
-} from "lucide-react";
+import { Cpu, Monitor, Wifi, Activity, Database, Settings } from "lucide-react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -55,7 +48,7 @@ export default function Technology() {
     <section id="technology" className="relative overflow-hidden py-24">
       {/* Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
+        className="absolute inset-0 bg-cover bg-center md:bg-fixed"
         style={{
           backgroundImage: `url(${techBg})`,
         }}
@@ -145,7 +138,7 @@ export default function Technology() {
                       </p>
                     </motion.div>
                   </SwiperSlide>
-                )
+                ),
               )}
             </Swiper>
           </motion.div>
@@ -244,13 +237,13 @@ export default function Technology() {
         }
       `}</style>
       {/* Repeating Bottom Image */}
-<div
-  className="absolute bottom-0 left-0 w-full h-32 z-10 pointer-events-none bg-repeat-x bg-bottom"
-  style={{
-    backgroundImage: `url(${bottomImage})`,
-    backgroundSize: "auto 100%",
-  }}
-/>
+      <div
+        className="absolute bottom-0 left-0 w-full h-32 z-10 pointer-events-none bg-repeat-x bg-bottom"
+        style={{
+          backgroundImage: `url(${bottomImage})`,
+          backgroundSize: "auto 100%",
+        }}
+      />
     </section>
   );
 }

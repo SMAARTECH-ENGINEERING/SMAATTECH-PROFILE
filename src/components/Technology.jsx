@@ -1,11 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Cpu, Monitor, Wifi, Activity, Database, Settings } from "lucide-react";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-
-import "swiper/css";
+import {
+  Cpu,
+  Monitor,
+  Wifi,
+  Activity,
+  Database,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 import techBg from "../../public/images/hero-bg.png";
 import bottomImage from "../../public/images/abstract-bg-border.png";
@@ -44,6 +48,22 @@ const techItems = [
 ];
 
 export default function Technology() {
+  const sliderRef = React.useRef(null);
+
+  const scrollLeft = () => {
+    sliderRef.current?.scrollBy({
+      left: -350,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollRight = () => {
+    sliderRef.current?.scrollBy({
+      left: 350,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section id="technology" className="relative overflow-hidden py-24">
       {/* Background */}
@@ -80,67 +100,72 @@ export default function Technology() {
           <h2 className="font-display text-3xl lg:text-4xl font-extrabold text-white">
             Powered by Advanced Technology
           </h2>
-
-          {/* <p className="text-blue-100/70 max-w-3xl mx-auto">
-            We integrate cutting-edge automation technology to deliver
-            intelligent, reliable and scalable solutions.
-          </p> */}
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-14 items-center">
-          {/* LEFT SIDE - SWIPER */}
+          {/* LEFT SIDE - CUSTOM SLIDER */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
+            className="relative"
           >
-            <Swiper
-              modules={[Autoplay]}
-              slidesPerView={2}
-              spaceBetween={20}
-              loop={true}
-              speed={3500}
-              autoplay={{
-                delay: 1,
-                disableOnInteraction: false,
-              }}
-              breakpoints={{
-                0: {
-                  slidesPerView: 1,
-                },
-                640: {
-                  slidesPerView: 2,
-                },
-              }}
-              className="techSwiper"
+            {/* Navigation */}
+            <div className="flex justify-end gap-3 mb-5">
+              <button
+                onClick={scrollLeft}
+                className="w-11 h-11 flex items-center justify-center border border-white/20 bg-white/5 backdrop-blur-md text-white hover:border-blue-400 transition-all"
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <button
+                onClick={scrollRight}
+                className="w-11 h-11 flex items-center justify-center border border-white/20 bg-white/5 backdrop-blur-md text-white hover:border-blue-400 transition-all"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            {/* Cards */}
+            <div
+              ref={sliderRef}
+              className="flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4"
             >
-              {[...techItems, ...techItems].map(
-                ({ icon: Icon, title, desc }, index) => (
-                  <SwiperSlide key={index}>
-                    <motion.div
-                      whileHover={{
-                        y: -8,
-                        scale: 1.02,
-                      }}
-                      className="aspect-square bg-white/5 border border-white/10  p-6 backdrop-blur-md hover:border-blue-500/50 transition-all duration-300"
-                    >
-                      <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-5">
-                        <Icon size={26} className="text-blue-300" />
-                      </div>
+              {techItems.map(({ icon: Icon, title, desc }, index) => (
+                <motion.div
+                  key={index}
+                  whileHover={{ y: -8 }}
+                  className="
+                    snap-center
+                    flex-shrink-0
+                    w-[85%]
+                    sm:w-[320px]
+                    bg-white/5
+                    border
+                    border-white/10
+                    p-6
+                    backdrop-blur-md
+                    hover:border-blue-500/50
+                    transition-all
+                    duration-300
+                  "
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-5">
+                    <Icon size={26} className="text-blue-300" />
+                  </div>
 
-                      <h3 className="text-white font-bold text-lg mb-3">
-                        {title}
-                      </h3>
+                  <h3 className="text-white font-bold text-lg mb-3">
+                    {title}
+                  </h3>
 
-                      <p className="text-blue-100/60 text-sm leading-relaxed">
-                        {desc}
-                      </p>
-                    </motion.div>
-                  </SwiperSlide>
-                ),
-              )}
-            </Swiper>
+                  <p className="text-blue-100/60 text-sm leading-relaxed">
+                    {desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
 
           {/* RIGHT SIDE - VIDEO */}
@@ -163,7 +188,7 @@ export default function Technology() {
               className="absolute inset-0 border border-blue-500/30"
             />
 
-            <div className="relative overflow-hidden  border border-white/10 bg-white/5 backdrop-blur-md aspect-video">
+            <div className="relative overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md aspect-video">
               <video
                 autoPlay
                 muted
@@ -190,18 +215,9 @@ export default function Technology() {
 
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    {
-                      label: "Flow Rate",
-                      value: "245 m³/h",
-                    },
-                    {
-                      label: "Pressure",
-                      value: "3.2 bar",
-                    },
-                    {
-                      label: "Level",
-                      value: "78%",
-                    },
+                    { label: "Flow Rate", value: "245 m³/h" },
+                    { label: "Pressure", value: "3.2 bar" },
+                    { label: "Level", value: "78%" },
                   ].map((item) => (
                     <div
                       key={item.label}
@@ -223,20 +239,7 @@ export default function Technology() {
         </div>
       </div>
 
-      <style jsx>{`
-        .techSwiper {
-          padding: 10px;
-        }
-
-        .techSwiper .swiper-wrapper {
-          transition-timing-function: linear !important;
-        }
-
-        .techSwiper .swiper-slide {
-          height: auto;
-        }
-      `}</style>
-      {/* Repeating Bottom Image */}
+      {/* Bottom Pattern */}
       <div
         className="absolute bottom-0 left-0 w-full h-32 z-10 pointer-events-none bg-repeat-x bg-bottom"
         style={{
@@ -244,6 +247,18 @@ export default function Technology() {
           backgroundSize: "auto 100%",
         }}
       />
+
+      {/* Hide Scrollbar */}
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 }

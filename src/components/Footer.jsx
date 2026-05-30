@@ -48,23 +48,23 @@ export default function Footer() {
     >
       {/* Background Watermark */}
       <motion.div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
-        animate={{
-          x: [0, 20, 0, -20, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        className="absolute inset-0 flex items-end justify-center pointer-events-none z-0"
+        // animate={{
+        //   x: [0, 20, 0, -20, 0],
+        // }}
+        // transition={{
+        //   duration: 20,
+        //   repeat: Infinity,
+        //   ease: "linear",
+        // }}
       >
         <h1
           className="
       text-[80px]
       sm:text-[120px]
-      md:text-[180px]
-      lg:text-[250px]
-      xl:text-[320px]
+      md:text-[80px]
+      lg:text-[100px]
+      xl:text-[170px]
       font-black
       uppercase
       tracking-[0.2em]
@@ -74,7 +74,7 @@ export default function Footer() {
     "
           style={{
             color: "transparent",
-            WebkitTextStroke: "1.5px rgba(59,130,246,0.15)",
+            WebkitTextStroke: "1.5px rgba(59,130,246,0.30)",
           }}
         >
           SMAATECH

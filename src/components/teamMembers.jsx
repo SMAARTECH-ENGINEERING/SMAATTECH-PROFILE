@@ -1,12 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Linkedin } from "lucide-react";
+import founderImg from "../../public/member/smaatech-founder.jpg";
 
 const teamMembers = [
   {
-    name: "John Smith",
+    name: "Manoj Kumar Mallick",
     designation: "CEO & Founder",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
+    image: founderImg,
     linkedin: "#",
   },
   {
@@ -31,7 +32,7 @@ const teamMembers = [
 
 export default function TeamSection() {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-light">
       <div className="container-custom px-4">
         <div className="flex items-center gap-3 mb-8">
           <span className="w-8 h-0.5 bg-blue-600" />

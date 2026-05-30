@@ -42,7 +42,7 @@ const VisionMission = () => {
             <img
               src={visionImg}
               alt="Vision"
-              className="w-full h-[450px] object-cover shadow-xl"
+              className="w-full h-[450px] relative  object-cover shadow-xl"
             />
 
             <div className="absolute -bottom-5 -left-5 w-24 h-24 border-4 border-blue-600"></div>

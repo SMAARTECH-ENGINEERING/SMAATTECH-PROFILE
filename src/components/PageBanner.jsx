@@ -44,7 +44,7 @@ export default function PageBanner({ title, subtitle }) {
         </span>
       </motion.div>
 
-      {/* Content */}
+      {/* Content */}  
       <div className="relative z-10 container-custom">
         {/* Breadcrumb */}
         <motion.div

@@ -13,6 +13,8 @@ const ChatBot = () => {
   const messageSound = useRef(null);
   const [speaking, setSpeaking] = useState(false);
   const hasWelcomed = useRef(false);
+  const [showReview, setShowReview] = useState(false);
+  const [rating, setRating] = useState(0);
 
   const [messages, setMessages] = useState([
     {
@@ -20,6 +22,22 @@ const ChatBot = () => {
       text: "👋 Welcome! How can I help you today?",
     },
   ]);
+
+  const emojis = {
+    1: "😡",
+    2: "😕",
+    3: "🙂",
+    4: "😊",
+    5: "🤩",
+  };
+
+  const labels = {
+    1: "Poor",
+    2: "Fair",
+    3: "Good",
+    4: "Great",
+    5: "Excellent",
+  };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -243,7 +261,13 @@ const ChatBot = () => {
                 </div>
 
                 <button
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+
+                    setTimeout(() => {
+                      setShowReview(true);
+                    }, 200);
+                  }}
                   className="text-white/80 hover:text-white"
                 >
                   <X size={20} />
@@ -381,6 +405,89 @@ const ChatBot = () => {
                 </motion.button>
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showReview && (
+          <motion.div
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.35 }}
+            className="
+        fixed
+        bottom-6
+        right-4
+        z-[60]
+        w-[320px]
+        bg-white
+        rounded-2xl
+        shadow-2xl
+        border
+        p-6
+      "
+          >
+            {!rating ? (
+              <>
+                <h3 className="text-lg font-semibold text-center">
+                  Rate Your Experience
+                </h3>
+
+                <p className="text-sm text-gray-500 text-center mt-1">
+                  We'd love your feedback
+                </p>
+
+                <div className="flex justify-center gap-2 mt-5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <motion.button
+                      key={star}
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => {
+                        setRating(star);
+
+                        setTimeout(() => {
+                          setShowReview(false);
+                          setRating(0);
+                        }, 2200);
+                      }}
+                      className="text-3xl"
+                    >
+                      ⭐
+                    </motion.button>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <motion.div
+                initial={{ scale: 0.5 }}
+                animate={{ scale: 1 }}
+                className="text-center"
+              >
+                <motion.div
+                  animate={{
+                    scale: [1, 1.25, 1],
+                    rotate: [0, -10, 10, 0],
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    repeat: Infinity,
+                  }}
+                  className="text-6xl"
+                >
+                  {emojis[rating]}
+                </motion.div>
+
+                <h3 className="mt-3 text-xl font-bold text-gray-800">
+                  {labels[rating]}
+                </h3>
+
+                <p className="text-gray-500 mt-1">
+                  Thank you for your feedback 💙
+                </p>
+              </motion.div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

@@ -88,7 +88,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-5">
               <img
-                src="./images/logo.jpeg"
+                src="/images/logo.jpeg"
                 alt="SEPL"
                 className="h-12 w-auto object-contain"
               />
@@ -119,6 +119,54 @@ export default function Footer() {
                 </motion.a>
               ))}
             </div>
+            <motion.a
+  href="/catalog/SMAATECH-Catalog.pdf"
+  download
+  whileHover={{
+    x: [0, -2, 2, -2, 2, 0],
+  }}
+  transition={{
+    duration: 0.5,
+    ease: "easeInOut",
+  }}
+  className="
+    mt-8
+    w-56
+    h-14
+    flex
+    items-center
+    justify-center
+    gap-2
+    bg-blue-600
+    text-white
+    font-semibold
+    shadow-md
+  "
+>
+  <motion.svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    animate={{ y: [0, 2, 0] }}
+    transition={{
+      repeat: Infinity,
+      duration: 1.5,
+      ease: "easeInOut",
+    }}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"
+    />
+  </motion.svg>
+
+  <span>Download Catalog</span>
+</motion.a>
           </div>
 
           {/* Footer Links */}

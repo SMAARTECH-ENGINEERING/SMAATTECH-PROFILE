@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, Phone } from 'lucide-react'
+import { Menu, X, Phone } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About Us', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Industries', href: '#industries' },
-  { label: 'Technologies', href: '#technology' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Careers', href: '#careers' },
-  { label: 'Contact Us', href: '#contact' },
+  { label: 'Home',         to: '/' },
+  { label: 'About Us',     to: '/about' },
+  { label: 'Services',     to: '/services' },
+  { label: 'Industries',   to: '/industries' },
+  { label: 'Technologies', to: '/technology' },
+  { label: 'Projects',     to: '/projects' },
+  { label: 'Careers',      to: '/careers' },
+  { label: 'Contact Us',   to: '/contact' },
 ]
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [activeLink, setActiveLink] = useState('#home')
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -24,11 +25,10 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const handleNav = (href) => {
-    setActiveLink(href)
+  const handleNav = (to) => {
     setMobileOpen(false)
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    navigate(to)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -55,49 +55,54 @@ export default function Header() {
       >
         <div className="container-custom flex items-center justify-between h-[72px]">
           {/* Logo */}
-          <a href="#home" onClick={() => handleNav('#home')} className="flex items-center gap-3">
-            <img src="./images/logo.jpeg" alt="SEPL Logo" className="h-12 w-auto object-contain" />
+          <button onClick={() => handleNav('/')} className="flex items-center gap-3">
+            <img src="/images/logo.jpeg" alt="SEPL Logo" className="h-12 w-auto object-contain" />
             <div className="hidden sm:block">
               <div className="font-display font-bold text-navy text-sm leading-tight">SMAATECH</div>
               <div className="font-sans text-[10px] text-accent font-medium tracking-wider">ENGINEERING PVT. LTD.</div>
             </div>
-          </a>
+          </button>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => handleNav(link.href)}
-                className={`relative px-3 py-2 text-[13px] font-medium transition-colors duration-200 rounded
-                  ${activeLink === link.href
-                    ? 'text-primary'
-                    : 'text-dark hover:text-primary'
-                  }`}
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.to === '/'}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className={({ isActive }) =>
+                  `relative px-3 py-2 text-[13px] font-medium transition-colors duration-200 rounded ${
+                    isActive ? 'text-primary' : 'text-dark hover:text-primary'
+                  }`
+                }
               >
-                {link.label}
-                {activeLink === link.href && (
-                  <motion.div
-                    layoutId="nav-underline"
-                    className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary rounded-full"
-                  />
+                {({ isActive }) => (
+                  <>
+                    {link.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="nav-underline"
+                        className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary rounded-full"
+                      />
+                    )}
+                  </>
                 )}
-              </button>
+              </NavLink>
             ))}
           </nav>
 
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <motion.a
-              href="#contact"
-              onClick={(e) => { e.preventDefault(); handleNav('#contact') }}
+            <motion.button
+              onClick={() => handleNav('/contact')}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               className="bg-primary text-white px-5 py-2.5 rounded text-sm font-semibold flex items-center gap-2 hover:bg-accent transition-colors duration-200"
             >
               GET IN TOUCH
               <span className="text-white/80">→</span>
-            </motion.a>
+            </motion.button>
           </div>
 
           {/* Mobile hamburger */}
@@ -122,20 +127,19 @@ export default function Header() {
               <div className="container-custom py-4 flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <button
-                    key={link.href}
-                    onClick={() => handleNav(link.href)}
+                    key={link.to}
+                    onClick={() => handleNav(link.to)}
                     className="text-left px-3 py-3 text-sm font-medium text-dark hover:text-primary hover:bg-light rounded transition-colors"
                   >
                     {link.label}
                   </button>
                 ))}
-                <a
-                  href="#contact"
-                  onClick={() => handleNav('#contact')}
+                <button
+                  onClick={() => handleNav('/contact')}
                   className="mt-2 bg-primary text-white text-center px-5 py-2.5 rounded text-sm font-semibold"
                 >
                   GET IN TOUCH
-                </a>
+                </button>
               </div>
             </motion.div>
           )}

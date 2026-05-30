@@ -1,12 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  MessageCircle,
-  X,
-  Send,
-  Bot,
-  User,
-} from "lucide-react";
+import { MessageCircle, X, Send, Bot, User } from "lucide-react";
+import Lottie from "lottie-react";
+import chatbotAnimation from "../../public/lottie/newBot.json";
 
 const ChatBot = () => {
   const [open, setOpen] = useState(false);
@@ -14,6 +10,9 @@ const ChatBot = () => {
   const [loading, setLoading] = useState(false);
 
   const messagesEndRef = useRef(null);
+  const messageSound = useRef(null);
+  const [speaking, setSpeaking] = useState(false);
+  const hasWelcomed = useRef(false);
 
   const [messages, setMessages] = useState([
     {
@@ -36,6 +35,51 @@ const ChatBot = () => {
     };
   }, [open]);
 
+  useEffect(() => {
+    messageSound.current = new Audio("/sounds/message.mp3");
+  }, []);
+
+  const speakMessage = (text) => {
+    if (!window.speechSynthesis) return;
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    utterance.lang = "en-US";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    utterance.onstart = () => {
+      setSpeaking(true);
+    };
+
+    utterance.onend = () => {
+      setSpeaking(false);
+    };
+
+    utterance.onerror = () => {
+      setSpeaking(false);
+    };
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  useEffect(() => {
+    if (open && !hasWelcomed.current) {
+      setTimeout(() => {
+        speakMessage("Welcome! How can I help you today?");
+      }, 500);
+
+      hasWelcomed.current = true;
+    }
+
+    if (!open) {
+      hasWelcomed.current = false;
+    }
+  }, [open]);
+
   const handleSend = () => {
     if (!message.trim()) return;
 
@@ -53,13 +97,33 @@ const ChatBot = () => {
     setLoading(true);
 
     setTimeout(() => {
+      const botReply = `Thanks for your message ${userMessage}. Our team will respond shortly.`;
+
       setMessages((prev) => [
         ...prev,
         {
           type: "bot",
-          text: `Thanks for your message: "${userMessage}". Our team will respond shortly.`,
+          text: botReply,
         },
       ]);
+
+      // Play notification sound first, then speak
+      if (messageSound.current) {
+        messageSound.current.currentTime = 0;
+
+        messageSound.current
+          .play()
+          .then(() => {
+            messageSound.current.onended = () => {
+              speakMessage(botReply);
+            };
+          })
+          .catch(() => {
+            speakMessage(botReply);
+          });
+      } else {
+        speakMessage(botReply);
+      }
 
       setLoading(false);
     }, 1800);
@@ -82,28 +146,31 @@ const ChatBot = () => {
   return (
     <>
       {/* Floating Button */}
-      <motion.button
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.95 }}
+      <motion.div
+        animate={{
+          y: [0, -10, 0],
+          scale: speaking ? 1.08 : 1,
+        }}
+        transition={{
+          y: {
+            duration: 2,
+            repeat: Infinity,
+          },
+          scale: {
+            duration: 0.3,
+          },
+        }}
         onClick={() => setOpen(!open)}
-        className="
-          fixed
-          bottom-5
-          right-6
-          z-50
-          w-14
-          h-14
-          rounded-sm
-          bg-blue-600
-          text-white
-          shadow-xl
-          flex
-          items-center
-          justify-center
-        "
+        className="fixed bottom-4 right-4 z-50 cursor-pointer"
       >
-        {open ? <X size={22} /> : <MessageCircle size={24} />}
-      </motion.button>
+        <div
+          className={`transition-all duration-300 ${
+            speaking ? "drop-shadow-[0_0_25px_rgba(37,99,235,0.8)]" : ""
+          }`}
+        >
+          <Lottie animationData={chatbotAnimation} loop className="w-28 h-28" />
+        </div>
+      </motion.div>
 
       {/* Chat Window */}
       <AnimatePresence>
@@ -199,16 +266,12 @@ const ChatBot = () => {
                 <div
                   key={index}
                   className={`flex ${
-                    msg.type === "user"
-                      ? "justify-end"
-                      : "justify-start"
+                    msg.type === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
                   <div
                     className={`flex items-end gap-2 max-w-[88%] ${
-                      msg.type === "user"
-                        ? "flex-row-reverse"
-                        : ""
+                      msg.type === "user" ? "flex-row-reverse" : ""
                     }`}
                   >
                     <div
@@ -286,12 +349,8 @@ const ChatBot = () => {
                 <input
                   type="text"
                   value={message}
-                  onChange={(e) =>
-                    setMessage(e.target.value)
-                  }
-                  onKeyDown={(e) =>
-                    e.key === "Enter" && handleSend()
-                  }
+                  onChange={(e) => setMessage(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   placeholder="Type your message..."
                   className="
                     flex-1

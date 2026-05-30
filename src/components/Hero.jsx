@@ -1,12 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Shield,
-  CheckCircle,
-  Cpu,
-  Activity,
-} from "lucide-react";
+import { ArrowRight, Shield, CheckCircle, Cpu, Activity } from "lucide-react";
+import { TypeAnimation } from "react-type-animation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -86,7 +81,7 @@ export default function Hero() {
           </motion.h1>
 
           {/* Description */}
-          <motion.p
+          {/* <motion.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -95,9 +90,32 @@ export default function Hero() {
           >
             Delivering end-to-end engineering, automation and infrastructure
             solutions for water, wastewater and industrial sectors.
-          </motion.p>
+          </motion.p> */}
 
           {/* CTA Buttons */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            className="text-blue-100/80 text-sm sm:text-base leading-relaxed mb-7 lg:mb-8 max-w-xl min-h-[60px]"
+          >
+            <TypeAnimation
+              sequence={[
+                "Delivering end-to-end engineering, automation solutions...",
+                2500,
+                "Engineering Smart Infrastructure Through Innovation...",
+                2500,
+                "Water, Wastewater & Industrial Automation Experts...",
+                2500,
+                "Trusted Partner For EPC & Infrastructure Projects...",
+                2500,
+              ]}
+              speed={60}
+              cursor={true}
+              repeat={Infinity}
+            />
+          </motion.div>
           <motion.div
             variants={fadeUp}
             initial="hidden"
